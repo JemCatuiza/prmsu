@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRMSU</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            background-color: #191956;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        #logo {
+            height: 50px;
+            margin-right: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Ensures three cards per row */
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card i {
+            font-size: 40px;
+            color: #191956;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            margin: 10px 0;
+            font-size: 20px;
+        }
+
+        .card p {
+            color: #666;
+        }
+
+        #profile-dashboard, #evaluation-form, #enrollment-form, #flowchart-page, #view-grade, #schedule-page {
+            display: none;
+            padding: 20px;
+        }
+
+        #profile-dashboard h2, #evaluation-form h2, #enrollment-form h2, #flowchart-page h2, #view-grade h2, #schedule-page h2 {
+            color: #191956;
+            margin-bottom: 20px;
+        }
+
+        .profile-info, .evaluation-info, .enrollment-info, .flowchart-info, .grade-info, .schedule-info {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .profile-info h3, .evaluation-info h3, .enrollment-info h3, .flowchart-info h3, .grade-info h3, .schedule-info h3 {
+            margin-top: 0;
+            font-size: 18px;
+        }
+
+        .profile-info p, .evaluation-info p, .enrollment-info p, .flowchart-info p, .grade-info p, .schedule-info p {
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .back-button, .submit-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #191956;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        .back-button:hover, .submit-button:hover {
+            background-color: #37378e;
+        }
+
+        .notification {
+            display: none;
+            background-color: #4caf50;
+            color: white;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #191956;
+            color: white;
+        }
+
+        .year-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .year-buttons button {
+            margin: 5px;
+            padding: 10px 20px;
+            background-color: #191956;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .year-buttons button:hover {
+            background-color: #37378e;
+        }
+
+        @media (max-width: 768px) {
+    .container {
+        grid-template-columns: repeat(2, 1fr); /* Two cards per row on tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #logo {
+        height: 40px;
+        margin-bottom: 10px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    .container {
+        grid-template-columns: 1fr; /* One card per row on phones */
+    }
+
+    .card {
+        padding: 10px;
+    }
+
+    .card i {
+        font-size: 30px;
+    }
+
+    .card h3 {
+        font-size: 18px;
+    }
+
+    .card p {
+        font-size: 14px;
+    }
+
+    #profile-dashboard, #evaluation-form, #enrollment-form, #flowchart-page, #view-grade, #schedule-page {
+        padding: 10px;
+    }
+
+    .profile-info, .evaluation-info, .enrollment-info, .flowchart-info, .grade-info, .schedule-info {
+        padding: 10px;
+    }
+
+    .profile-info h3, .evaluation-info h3, .enrollment-info h3, .flowchart-info h3, .grade-info h3, .schedule-info h3 {
+        font-size: 16px;
+    }
+
+    .profile-info p, .evaluation-info p, .enrollment-info p, .flowchart-info p, .grade-info p, .schedule-info p {
+        font-size: 12px;
+    }
+
+    .back-button, .submit-button {
+        padding: 8px 16px;
+    }
+
+    table th, table td {
+        padding: 8px;
+    }
+
+    .year-buttons {
+        flex-direction: column;
+    }
+
+    .year-buttons button {
+        margin: 5px 0;
+    }
+}
+    </style>
+</head>
+<body>
+    <header>
+        <img src="President_Ramon_Magsaysay_State_University.png" alt="Logo" id="logo">
+        <h1>President Ramon Magsaysay State University</h1>
+    </header>
+    <div class="container" id="main-page">
+        <div class="card" onclick="showProfileDashboard()">
+            <i class="fas fa-user-circle"></i>
+            <h3>My Profile</h3>
+            <p>View and update your profile information.</p>
+        </div>
+        <div class="card" onclick="showEnrollmentForm()">
+            <i class="fas fa-edit"></i>
+            <h3>Online Enrollment</h3>
+            <p>Enroll in your courses online with ease.</p>
+        </div>
+    
+        
+        <div class="card" onclick="showEvaluationForm()">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <h3>Evaluate My Teacher</h3>
+            <p>Provide feedback on your instructors.</p>
+        </div>
+        <div class="card" onclick="showSchedulePage()">
+            <i class="fas fa-calendar-alt"></i>
+            <h3>My Schedule Viewer</h3>
+            <p>View your class schedule.</p>
+        </div>
+        <div class="card" onclick="showFlowchartPage()">
+            <i class="fas fa-project-diagram"></i>
+            <h3>My Flowchart</h3>
+            <p>Track your academic progress.</p>
+        </div>
+        <div class="card" onclick="showGrades()">
+            <i class="fas fa-graduation-cap"></i>
+            <h3>View Grade</h3>
+            <p>Check your grades for completed courses.</p>
+        </div>
+    </div>
+    <div id="profile-dashboard">
+        <h2>Profile Dashboard</h2>
+        <div class="profile-info">
+            <h3>Personal Information</h3>
+            <p><strong>Name:</strong> LHENSEI RIVAS</p>
+            <p><strong>Email:</strong> RIVASL@students.prmsu.edu.ph</p>
+            <p><strong>Phone:</strong> +1234567890</p>
+        </div>
+        <div class="profile-info">
+            <h3>Academic Information</h3>
+            <p><strong>Student ID:</strong> 2022-124-213</p>
+            <p><strong>Major:</strong> Civil Engineering</p>
+            <p><strong>Year:</strong> Junior</p>
+        </div>
+        <a href="#" class="back-button" onclick="showMainPage()">Back to Main Page</a>
+    </div>
+    <div id="evaluation-form">
+        <h2>Evaluation Form</h2>
+        <div class="evaluation-info">
+            <h3>Evaluate Your Teacher</h3>
+            <form id="form">
+                <label for="teacher">Teacher:</label><br>
+                <input type="text" id="teacher" name="teacher"><br><br>
+                <label for="course">Course:</label><br>
+                <input type="text" id="course" name="course"><br><br>
+                <label for="rating">Rating:</label><br>
+                <input type="number" id="rating" name="rating" min="1" max="5"><br><br>
+                <label for="comments">Comments:</label><br>
+                <textarea id="comments" name="comments" rows="4" cols="50"></textarea><br><br>
+                <input type="button" class="submit-button" value="Submit" onclick="submitEvaluationForm()">
+            </form>
+            <div class="notification" id="evaluation-notification">Form has been submitted successfully!</div>
+        </div>
+        <a href="#" class="back-button" onclick="showMainPage()">Back to Main Page</a>
+    </div>
+    <div id="enrollment-form">
+        <h2>Online Enrollment</h2>
+        <div class="enrollment-info">
+            <h3>Enroll in the following CE subjects:</h3>
+            <form id="enrollmentForm">
+                <input type="checkbox" id="subject1" name="subjects" value="CE101">
+                <label for="subject1">CE101 - Technology and Society</label><br>
+                
+                <input type="checkbox" id="subject2" name="subjects" value="CE102">
+                <label for="subject2">CE102 - Solutions to CE Problems</label><br>
+                
+                <input type="checkbox" id="subject3" name="subjects" value="CE103">
+                <label for="subject3">CE103 - Systems Design</label><br>
+                
+                <input type="checkbox" id="subject4" name="subjects" value="CE104">
+                <label for="subject4">CE104 - Engineering Utilities I</label><br>
+                
+                <input type="checkbox" id="subject5" name="subjects" value="CE105">
+                <label for="subject5">CE105 - Engineering Utilities II</label><br>
+                
+                <input type="checkbox" id="subject6" name="subjects" value="CE106">
+                <label for="subject6">CE106 - Railroad Engineering</label><br>
+                
+                <input type="checkbox" id="subject7" name="subjects" value="CE107">
+                <label for="subject7">CE107 - Environmental Science and Society</label><br>
+                
+                <!-- Add more subjects as needed -->
+                <input type="button" class="submit-button" value="Submit" onclick="submitEnrollmentForm()">
+            </form>
+            <div class="enrollment-info" id="enrollment-info" style="display:none;">
+                <h3>Enrolled Subjects:</h3>
+                <table id="enrolled-subjects">
+                    <thead>
+                        <tr>
+                            <th>Subject Code</th>
+                            <th>Subject Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be added dynamically here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <a href="#" class="back-button" onclick="showMainPage()">Back to Main Page</a>
+    </div>
+    <div id="flowchart-page">
+        <h2>Flowchart Page</h2>
+        <div class="year-buttons">
+            <button onclick="showFirstYearSubjects()">1st Year</button>
+            <button onclick="showSecondYearSubjects()">2nd Year</button>
+            <button onclick="showThirdYearSubjects()">3rd Year</button>
+            <button onclick="showFourthYearSubjects()">4th Year</button>
+        </div>
+        <div class="flowchart-info" id="first-year-subjects">
+            <h3>First Semester</h3>
+            <ul>
+                <li>College Algebra</li>
+                <li>Plane and Spherical Trigonometry</li>
+                <li>General Chemistry</li>
+                <li>Engineering Drawing and Design</li>
+                <li>English Communication Skills</li>
+                <li>Philippine History</li>
+            </ul>
+        
+            <h3>Second Semester</h3>
+            <ul>
+                <li>Advanced Algebra</li>
+                <li>Analytic Geometry</li>
+                <li>Physics (Mechanics and Heat)</li>
+                <li>Computer Fundamentals and Programming</li>
+                <li>Introduction to Engineering</li>
+                <li>English Communication Skills II</li>
+            </ul>
+        
+        </div>
+        <div class="flowchart-info" id="second-year-subjects">
+            <h2>Second Year</h2>
+            <h3>First Semester</h3>
+            <ul>
+                <li>Differential Calculus</li>
+                <li>Physics (Electricity, Magnetism, and Optics)</li>
+                <li>Statics of Rigid Bodies</li>
+                <li>Engineering Economics</li>
+                <li>Surveying</li>
+                <li>Environmental Science</li>
+            </ul>
+        
+            <h3>Second Semester</h3>
+            <ul>
+                <li>Integral Calculus</li>
+                <li>Dynamics of Rigid Bodies</li>
+                <li>Mechanics of Deformable Bodies</li>
+                <li>Surveying II</li>
+                <li>Introduction to Transportation Engineering</li>
+                <li>Technical Writing</li>
+            </ul>
+        
+        </div>
+        <div class="flowchart-info" id="third-year-subjects">
+            <h2>Third Year</h2>
+            <h3>First Semester</h3>
+            <ul>
+                <li>Differential Equations</li>
+                <li>Fluid Mechanics</li>
+                <li>Structural Theory</li>
+                <li>Soil Mechanics</li>
+                <li>Engineering Geology</li>
+                <li>Introduction to Probability and Statistics</li>
+            </ul>
+        
+            <h3>Second Semester</h3>
+            <ul>
+                <li>Numerical Methods</li>
+                <li>Hydraulics</li>
+                <li>Reinforced Concrete Design</li>
+                <li>Steel Design</li>
+                <li>Construction Methods and Project Management</li>
+                <li>Geotechnical Engineering</li>
+            </ul>
+        </div>
+        <div class="flowchart-info" id="fourth-year-subjects">
+            <h2>Fourth Year</h2>
+            <h3>First Semester</h3>
+            <ul>
+                <li>Water Supply Engineering</li>
+                <li>Highway Engineering</li>
+                <li>Structural Design</li>
+                <li>Environmental Engineering</li>
+                <li>Project Study/Research</li>
+                <li>Elective Course (e.g., Coastal Engineering, Advanced Structural Analysis)</li>
+            </ul>
+        
+            <h3>Second Semester</h3>
+            <ul>
+                <li>Wastewater Engineering</li>
+                <li>Foundation Engineering</li>
+                <li>Construction Project Management</li>
+                <li>Thesis/Capstone Project</li>
+                <li>Professional Ethics and Laws</li>
+                <li>Elective Course (e.g., Earthquake Engineering, Construction Technology)</li>
+            </ul>
+        </div>
+        <a href="#" class="back-button" onclick="showMainPage()">Back to Main Page</a>
+    </div>
+    <div id="view-grade">
+        <h2>View Grade</h2>
+        <div class="grade-info">
+            <h3>Grades</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Surveying</td>
+                        <td>2.0</td>
+                    </tr>
+                    <tr>
+                        <td>Mechanics of Deformable bodies</td>
+                        <td>3.0</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        <a href="#" class="back-button" onclick="showMainPage()">Back to Main Page</a>
+    </div>
+    <div id="schedule-page">
+        <h2>My Schedule</h2>
+        <div class="schedule-info">
+            <h2>My Schedule Viewer</h2>
+            <div class="schedule-info">
+                <h3>Class Schedule</h3>
+                <p>View your class schedule below:</p>
+                
+                <h2>Monday</h2>
+                <table>
+                    <tr>
+                        <th>Time</th>
+                        <th>Subject Code</th>
+                        <th>Description</th>
+                        <th>Location</th>
+                    </tr>
+                    <tr>
+                        <td>10:30 am - 12:00 pm</td>
+                        <td>EU 1</td>
+                        <td>Engineering Utilities I</td>
+                        <td>VIRTUAL RM02</td>
+                    </tr>
+                    <tr>
+                        <td>1:00 pm - 2:00 pm</td>
+                        <td>NS 313</td>
+                        <td>Numerical Solutions to C…</td>
+                        <td>VIRTUAL RM02</td>
+                    </tr>
+                    <tr>
+                        <td>3:00 pm - 4:00 pm</td>
+                        <td>GEE 13A</td>
+                        <td>Environmental Science and Society</td>
+                        <td>VIRTUAL RM02</td>
+                    </tr>
+                    <tr>
+                        <td>4:00 pm - 5:30 pm</td>
+                        <td>BSD 323</td>
+                        <td>Building Systems Design</td>
+                        <td>VIRTUAL RM07</td>
+                    </tr>
+                    <tr>
+                        <td>4:00 pm - 5:00 pm</td>
+                        <td>GEE 13A</td>
+                        <td>Environmental Science a…</td>
+                        <td>VIRTUAL RM10</td>
+                    </tr>
+                </table>
+                
+                <h2>Tuesday</h2>
+                <table>
+                    <tr>
+                        <th>Time</th>
+                        <th>Subject Code</th>
+                        <th>Description</th>
+                        <th>Location</th>
+                    </tr>
+                    <tr>
+                        <td>7:30 am - 9:00 am</td>
+                        <td>GEC 7</td>
+                        <td>Science, Technology and…</td>
+                        <td>VIRTUAL RM06</td>
+                    </tr>
+                    <tr>
+                        <td>10:30 am - 12:00 pm</td>
+                        <td>CE 314A</td>
+                        <td>Structural Theory</td>
+                        <td>COE 203</td>
+                    </tr>
+                    <tr>
+                        <td>12:30 pm - 2:00 pm</td>
+                        <td>NS 313</td>
+                        <td>Numerical Solutions to C…</td>
+                        <td>COE 203</td>
+                    </tr>
+                    <tr>
+                        <td>2:00 pm - 3:00 pm</td>
+                        <td>BSD 323</td>
+                        <td>Building Systems Design</td>
+                        <td>SELB 107</td>
+                    </tr>
+                    <tr>
+                        <td>3:00 pm - 4:00 pm</td>
+                        <td>EU 2</td>
+                        <td>Engineering Utilities II</td>
+                        <td>VIRTUAL RM05</td>
+                    </tr>
+                    <tr>
+                        <td>2:00 pm - 3:00 pm</td>
+                        <td>BSD 323</td>
+                        <td>Building Systems Design</td>
+                        <td>SELB 107</td>
+                    </tr>
+                </table>
+                
+                <h2>Wednesday</h2>
+                <table>
+                    <tr>
+                        <th>Time</th>
+                        <th>Subject Code</th>
+                        <th>Description</th>
+                        <th>Location</th>
+                    </tr>
+                    <tr>
+                        <td>10:30 pm - 12:00 pm</td>
+                        <td>EU1</td>
+                        <td>Engineering Utilities 1</td>
+                        <td>VIR</td>
+                    </tr>
+                    <tr>
+                        <td>12:30 pm - 2:00 pm</td>
+                        <td>HRE 313</td>
+                        <td>Highway and Railroad Engineering</td>
+                        <td>COE 203</td>
+                    </tr>
+                    <tr>
+                        <td>2:00 pm - 3:00 pm</td>
+                        <td>EU 2</td>
+                        <td>Engineering Utilities II</td>
+                        <td>VIRTUAL RM05</td>
+                    </tr>
+                    <tr>
+                        <td>3:00 pm - 4:00 pm</td>
+                        <td>GEE 13A</td>
+                        <td>Environmental Science a…</td>
+                        <td>VIRTUAL RM10</td>
+                    </tr>
+                    <tr>
+                        <td>4:00 pm - 5:30 pm</td>
+                        <td>BSD 323</td>
+                        <td>Building Systems Design</td>
+                        <td>VIRTUAL RM08</td>
+                    </tr>
+                </table>
+                
+                <h2>Thursday</h2>
+                <table>
+                    <tr>
+                        <th>Time</th>
+                        <th>Subject Code</th>
+                        <th>Description</th>
+                        <th>Location</th>
+                    </tr>
+                    <tr>
+                        <td>7:30 am - 9:00 am</td>
+                        <td>GEC 7</td>
+                        <td>Science, Technology and…</td>
+                        <td>COE 103</td>
+                    </tr>
+                    <tr>
+                        <td>9:30 am - 10:30 am</td>
+                        <td>CE 314A</td>
+                        <td>Structural Theory</td>
+                        <td>COE 203</td>
+                    </tr>
+                    <tr>
+                        <td>10:30 am - 12:00 pm</td>
+                        <td>CE 314A</td>
+                        <td>Structural Theory</td>
+                        <td>COE 203</td>
+                    </tr>
+                    <tr>
+                        <td>12:30 pm - 2:00 pm</td>
+                        <td>NS 313</td>
+                        <td>Numerical Solutions to C…</td>
+                        <td>COE 203</td>
+                    </tr>
+                    <tr>
+                        <td>2:00 pm - 3:00 pm</td>
+                        <td>BSD 323</td>
+                        <td>Building Systems Design</td>
+                        <td>VIRTUAL RM07</td>
+                    </tr>
+                    <tr>
+                        <td>3:00 pm - 4:00 pm</td>
+                        <td>EU 2</td>
+                        <td>Engineering Utilities II</td>
+                        <td>COE 202</td>
+                    </tr>
+                    <tr>
+                        <td>4:00 pm - 5:00 pm</td>
+                        <td>NS 313</td>
+                        <td>Numerical Solutions to C…</td>
+                        <td>VIRTUAL RM06</td>
+                    </tr>
+                </table>
+                
+                <h2>Friday</h2>
+                <table>
+                    <tr>
+                        <th>Time</th>
+                        <th>Subject Code</th>
+                        <th>Description</th>
+                        <th>Location</th>
+                    </tr>
+                    <tr>
+                        <td>12:30 pm - 2:00 pm</td>
+                        <td>HRE 313</td>
+                        <td>Highway and Railroad Engineering</td>
+                        <td>COE 203</td>
+                    </tr>
+                    <tr>
+                        <td>2:00 pm - 3:00 pm</td>
+                        <td>GEE 13A</td>
+                        <td>Environmental Science a…</td>
+                        <td>VIRTUAL RM10</td>
+                    </tr>
+                </table>
+                
+                
+    
+            </div>
+            <a href="#" class="back-button" onclick="showMainPage()">Back to Main Page</a>
+        </div>
+
+        <div id="class-offering-page" style="display: none;">
+            <h2>List of Class Offering</h2>
+            <!-- Content for class offerings -->
+            <a href="#" class="back-button" onclick="showMainPage()">Back to Main Page</a>
+        </div>
+        
+        
+    <script>
+        function showMainPage() {
+            document.getElementById('main-page').style.display = 'grid';
+            document.getElementById('profile-dashboard').style.display = 'none';
+            document.getElementById('evaluation-form').style.display = 'none';
+            document.getElementById('enrollment-form').style.display = 'none';
+            document.getElementById('flowchart-page').style.display = 'none';
+            document.getElementById('view-grade').style.display = 'none';
+            document.getElementById('schedule-page').style.display = 'none';
+        }
+        function showClassOffering() {
+        document.getElementById('main-page').style.display = 'none';
+        document.getElementById('class-offering-page').style.display = 'block'; // Make sure you have this section defined in your HTML
+        }
+
+
+        function showProfileDashboard() {
+            document.getElementById('main-page').style.display = 'none';
+            document.getElementById('profile-dashboard').style.display = 'block';
+        }
+
+        function showEvaluationForm() {
+            document.getElementById('main-page').style.display = 'none';
+            document.getElementById('evaluation-form').style.display = 'block';
+        }
+
+        function showEnrollmentForm() {
+            document.getElementById('main-page').style.display = 'none';
+            document.getElementById('enrollment-form').style.display = 'block';
+        }
+
+        function showFlowchartPage() {
+            document.getElementById('main-page').style.display = 'none';
+            document.getElementById('flowchart-page').style.display = 'block';
+            hideAllYearSubjects();
+        }
+
+        function showGrades() {
+            document.getElementById('main-page').style.display = 'none';
+            document.getElementById('view-grade').style.display = 'block';
+        }
+
+        function showSchedulePage() {
+            document.getElementById('main-page').style.display = 'none';
+            document.getElementById('schedule-page').style.display = 'block';
+        }
+
+        function submitEvaluationForm() {
+            document.getElementById('form').reset();
+            document.getElementById('evaluation-notification').style.display = 'block';
+        }
+
+        function submitEnrollmentForm() {
+            document.getElementById('enroll-form').reset();
+            document.getElementById('enrollment-notification').style.display = 'block';
+        }
+
+        function hideAllYearSubjects() {
+            document.getElementById('first-year-subjects').style.display = 'none';
+            document.getElementById('second-year-subjects').style.display = 'none';
+            document.getElementById('third-year-subjects').style.display = 'none';
+            document.getElementById('fourth-year-subjects').style.display = 'none';
+        }
+
+        function showFirstYearSubjects() {
+            hideAllYearSubjects();
+            document.getElementById('first-year-subjects').style.display = 'block';
+        }
+
+        function showSecondYearSubjects() {
+            hideAllYearSubjects();
+            document.getElementById('second-year-subjects').style.display = 'block';
+        }
+
+        function showThirdYearSubjects() {
+            hideAllYearSubjects();
+            document.getElementById('third-year-subjects').style.display = 'block';
+        }
+
+        function showFourthYearSubjects() {
+            hideAllYearSubjects();
+            document.getElementById('fourth-year-subjects').style.display = 'block';
+        }
+
+        
+        function submitEnrollmentForm() {
+            const selectedSubjects = Array.from(document.querySelectorAll('input[name="subjects"]:checked'))
+                .map(checkbox => checkbox.value);
+
+            const subjects = {
+                CE101: 'Technology and Society',
+                CE102: 'Solutions to CE Problems',
+                CE103: 'Systems Design',
+                CE104: 'Engineering Utilities I',
+                CE105: 'Engineering Utilities II',
+                CE106: 'Railroad Engineering',
+                CE107: 'Environmental Science and Society',
+               
+                // Add more subjects here
+            };
+
+            const tableBody = document.getElementById('enrolled-subjects').getElementsByTagName('tbody')[0];
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            selectedSubjects.forEach(code => {
+                const row = tableBody.insertRow();
+                row.insertCell(0).textContent = code;
+                row.insertCell(1).textContent = subjects[code] || 'Unknown Subject';
+            });
+
+            document.getElementById('enrollment-info').style.display = 'block';
+        }
+
+        
+        
+
+    </script>
+</body>
+</html>
